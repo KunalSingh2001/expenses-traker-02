@@ -1,21 +1,14 @@
-import React, { useRef } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
-function Register() {
+import React from 'react';
+
+function Login() {
     const emailRef = useRef();
     const passwordRef = useRef();
-    const confirmPasswordRef = useRef();
-
-    async function registerSubmitHandler(event) {
+    async function loginSubmitHandler(event) {
         event.preventDefault();
         const email = emailRef.current.value;
         const password = passwordRef.current.value;
-        const confirm_password = confirmPasswordRef.current.value;
         if (password.length != 6) {
             alert("Password must be at least 6 characters long");
-            return;
-        }
-        if (password != confirm_password) {
-            alert("Password does not match with confirm password");
             return;
         }
         console.log(password,confirm_password );
@@ -35,8 +28,7 @@ function Register() {
             if (res.ok) {
                 emailRef.current.value = "";
                 passwordRef.current.value = "";
-                confirmPasswordRef.current.value = "";
-                alert('Reagister Successfully')
+                alert('Login Successfully')
             } else {
                 alert("Error: " + data.error.message);
             }
@@ -50,7 +42,7 @@ function Register() {
         <div className="container d-flex justify-content-center align-items-center vh-100">
             <div className="card shadow p-4 w-50">
                 <h3 className="text-center mb-4">Register</h3>
-                <form onSubmit={registerSubmitHandler}>
+                <form onSubmit={loginSubmitHandler}>
                     <div className="mb-3">
                         <label htmlFor="email" className="form-label">
                             Email address
@@ -77,22 +69,9 @@ function Register() {
                             required
                         />
                     </div>
-                    <div className="mb-3">
-                        <label htmlFor="confirmPassword" className="form-label">
-                            Confirm Password
-                        </label>
-                        <input
-                            type="password"
-                            className="form-control"
-                            id="confirmPassword"
-                            placeholder="Re-enter password"
-                            ref={confirmPasswordRef}
-                            required
-                        />
-                    </div>
                     <div className="d-grid">
                         <button type="submit" className="btn btn-primary">
-                            Register
+                            Login
                         </button>
                     </div>
                 </form>
@@ -101,4 +80,4 @@ function Register() {
     );
 }
 
-export default Register;
+export default Login;
