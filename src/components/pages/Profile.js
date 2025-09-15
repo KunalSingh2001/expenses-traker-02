@@ -1,4 +1,4 @@
-import React, { useRef, useContext } from "react";
+import React, { useRef, useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 function Profile() {
@@ -10,21 +10,53 @@ function Profile() {
         event.preventDefault();
         const name = fullNameRef.current.value;
         const url = profilePhotoRef.current.value;
-        const res = await fetch("https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyDtfKBpbUoqwilqRNORQ22-NoOc7SnzNMA", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: {
-                idToken: token,
-                displayName: name,
-                photoUrl: url,
-                returnSecureToken: true,
+        const res = await fetch(
+            "https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyDtfKBpbUoqwilqRNORQ22-NoOc7SnzNMA",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    idToken: token,
+                    displayName: name,
+                    photoUrl: url,
+                    returnSecureToken: true,
+                }),
             }
-        });
+        );
         const data = await res.json();
         console.log('data', data);
     }
+
+    useEffect(() => {
+        async function fetchUserDetail() {
+            try {
+                const res = await fetch(
+                    "https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyDtfKBpbUoqwilqRNORQ22-NoOc7SnzNMA",
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                            idToken: token, 
+                        }),
+                    }
+                );
+
+                const data = await res.json();
+                if (data && data.users && data.users.length > 0) {
+                    fullNameRef.current.value = data.users[0].displayName || "";
+                    profilePhotoRef.current.value = data.users[0].photoUrl || "";
+                }
+            } catch (err) {
+                console.error("Error fetching user details:", err);
+            }
+        }
+
+        fetchUserDetail();
+    }, [token]);
 
 
     return (
