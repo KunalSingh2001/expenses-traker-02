@@ -5,7 +5,7 @@ function Profile() {
     const { token } = useContext(AuthContext);
     const fullNameRef = useRef();
     const profilePhotoRef = useRef();
-
+    console.log('token', token);
     async function handleFormSubmit(event) {
         event.preventDefault();
         const name = fullNameRef.current.value;
