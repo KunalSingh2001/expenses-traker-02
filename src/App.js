@@ -1,8 +1,35 @@
-import logo from "./logo.svg";
+import React, { useCallback, useContext } from "react";
 import "./App.css";
 import Register from "./components/auth/Register";
+import Login from "./components/auth/Login";
+import Dashboard from "./components/pages/Dashboard";
+import Profile from "./components/pages/Profile";
+import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
+import { AuthContext } from "./components/context/AuthContext";
+
 function App() {
-    return <Register />;
+  const { token } = useContext(AuthContext);
+  return (
+    <Router>
+      <Switch>
+        <Route path="/" exact>
+          <Redirect to="/login" />
+        </Route>
+        <Route path="/register" exact component={Register} />
+        <Route path="/login" exact component={Login} />
+        <Route path='/dashboard'>
+          {token &&
+            <Dashboard />
+          }
+        </Route>
+        <Route path='/profile'>
+          {token &&
+            <Profile />
+          }
+        </Route>
+      </Switch>
+    </Router>
+  );
 }
 
 export default App;

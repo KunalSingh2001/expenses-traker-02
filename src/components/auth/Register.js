@@ -10,11 +10,11 @@ function Register() {
         const email = emailRef.current.value;
         const password = passwordRef.current.value;
         const confirm_password = confirmPasswordRef.current.value;
-        if (password.length != 6) {
+        if (password.length !== 6) {
             alert("Password must be at least 6 characters long");
             return;
         }
-        if (password != confirm_password) {
+        if (password !== confirm_password) {
             alert("Password does not match with confirm password");
             return;
         }

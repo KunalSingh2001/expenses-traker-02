@@ -1,19 +1,21 @@
-import React from 'react';
-
+import React, {useRef, useContext} from 'react';
+import { Readirect, useHistory } from 'react-router-dom';
+import { AuthContext} from '../context/AuthContext';
 function Login() {
+    const {setLoginHandler} = useContext(AuthContext)
     const emailRef = useRef();
     const passwordRef = useRef();
+    const history = useHistory();
     async function loginSubmitHandler(event) {
         event.preventDefault();
         const email = emailRef.current.value;
         const password = passwordRef.current.value;
-        if (password.length != 6) {
+        if (password.length !== 6) {
             alert("Password must be at least 6 characters long");
             return;
         }
-        console.log(password,confirm_password );
         try {
-            const res = await fetch("https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyDtfKBpbUoqwilqRNORQ22-NoOc7SnzNMA", {
+            const res = await fetch("https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDtfKBpbUoqwilqRNORQ22-NoOc7SnzNMA", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
@@ -24,11 +26,11 @@ function Login() {
             });
 
             const data = await res.json();
-            console.log('data', data)
             if (res.ok) {
+                setLoginHandler(data);
                 emailRef.current.value = "";
                 passwordRef.current.value = "";
-                alert('Login Successfully')
+                history.push('/dashboard');
             } else {
                 alert("Error: " + data.error.message);
             }
@@ -41,7 +43,7 @@ function Login() {
     return (
         <div className="container d-flex justify-content-center align-items-center vh-100">
             <div className="card shadow p-4 w-50">
-                <h3 className="text-center mb-4">Register</h3>
+                <h3 className="text-center mb-4">Login</h3>
                 <form onSubmit={loginSubmitHandler}>
                     <div className="mb-3">
                         <label htmlFor="email" className="form-label">
