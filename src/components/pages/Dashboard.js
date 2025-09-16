@@ -1,7 +1,8 @@
 import React, {useContext} from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { AuthContext } from "../context/AuthContext";
 function Dashboard() {
+    const history = useHistory();
     const { token, logoutHandler } = useContext(AuthContext);
     async function verifyEmail(event) {
         event.preventDefault();
@@ -20,6 +21,11 @@ function Dashboard() {
         console.log(data);
     }
 
+    function userLogout() {
+        logoutHandler();
+        history.push("/login");
+    }
+
     return (
         <div className="d-flex justify-content-between align-items-center border-bottom border-dark pb-2 mb-3">
             <h6 className="mb-0">Welcome to Expense Tracker!!!</h6>
@@ -27,7 +33,7 @@ function Dashboard() {
                 Your profile is Incomplete. <Link to="/profile" className="text-primary">Complete now</Link>
             </span>
             <button className="btn btn-primary" onClick={verifyEmail}>Verify email</button>
-            <button className="btn btn-danger" onClick={logoutHandler}>Logout</button>
+            <button className="btn btn-danger" onClick={userLogout}>Logout</button>
         </div>
     );
 }

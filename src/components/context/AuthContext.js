@@ -1,10 +1,8 @@
 import React, { createContext, useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
 const AuthContext = createContext();
 const AuthProvider = ({ children }) => {
     const [token, setToken] = useState(null);
     const [isLogin, setIsLogin] = useState(null);
-    const history = useHistory();
     useEffect(() => {
         const savedToken = localStorage.getItem('token');
         if (savedToken) {
@@ -25,7 +23,6 @@ const AuthProvider = ({ children }) => {
         localStorage.removeItem('isLogin');
         localStorage.removeItem('token');
         setToken(null);
-        history.push('/login');
     }
 
     return (

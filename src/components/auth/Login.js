@@ -1,8 +1,8 @@
-import React, {useRef, useContext} from 'react';
-import { Readirect, useHistory } from 'react-router-dom';
-import { AuthContext} from '../context/AuthContext';
+import React, { useRef, useContext } from 'react';
+import { Readirect, useHistory, Link } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
 function Login() {
-    const {setLoginHandler} = useContext(AuthContext)
+    const { setLoginHandler } = useContext(AuthContext)
     const emailRef = useRef();
     const passwordRef = useRef();
     const history = useHistory();
@@ -58,6 +58,7 @@ function Login() {
                             required
                         />
                     </div>
+
                     <div className="mb-3">
                         <label htmlFor="password" className="form-label">
                             Password
@@ -71,6 +72,14 @@ function Login() {
                             required
                         />
                     </div>
+
+                    {/* Forgot Password link */}
+                    <div className="mb-3 text-end">
+                        <Link to="/forgot-password" className="text-decoration-none">
+                            Forgot Password?
+                        </Link>
+                    </div>
+
                     <div className="d-grid">
                         <button type="submit" className="btn btn-primary">
                             Login
@@ -79,6 +88,7 @@ function Login() {
                 </form>
             </div>
         </div>
+
     );
 }
 
