@@ -4,12 +4,16 @@ import Register from "./components/auth/Register";
 import Login from "./components/auth/Login";
 import Dashboard from "./components/pages/Dashboard";
 import Profile from "./components/pages/Profile";
+import Frontend from "./components/pages/Frontend";
 import ForgetPassword from "./components/auth/ForgetPassword";
 import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 import { AuthContext } from "./components/context/AuthContext";
 
 function App() {
-  const { token } = useContext(AuthContext);
+  const { token, loading  } = useContext(AuthContext);
+  if (loading) {
+    return <div className="text-center mt-5">Loading...</div>; 
+  }
   return (
     <Router>
       <Switch>
@@ -19,15 +23,16 @@ function App() {
         <Route path="/register" exact component={Register} />
         <Route path="/forgot-password" exact component={ForgetPassword} />
         <Route path="/login" exact component={Login} />
-        <Route path='/dashboard'>
-          {token &&
-            <Dashboard />
-          }
+
+        <Route path="/dashboard" exact>
+          {token ? <Dashboard /> : <Redirect to="/login" />}
         </Route>
-        <Route path='/profile'>
-          {token &&
-            <Profile />
-          }
+
+        <Route path="/profile" exact>
+          {token ? <Profile /> : <Redirect to="/login" />}
+        </Route>
+        <Route path="/frontend" exact>
+          {token ? <Frontend /> : <Redirect to="/login" />}
         </Route>
       </Switch>
     </Router>

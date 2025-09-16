@@ -3,12 +3,14 @@ const AuthContext = createContext();
 const AuthProvider = ({ children }) => {
     const [token, setToken] = useState(null);
     const [isLogin, setIsLogin] = useState(null);
+    const [loading, setLoading] = useState(true);
     useEffect(() => {
-        const savedToken = localStorage.getItem('token');
+        const savedToken = localStorage.getItem("token");
         if (savedToken) {
             setToken(savedToken);
         }
-    })
+        setLoading(false); // mark as finished checking
+    }, []);
 
     const setLoginHandler = (data) => {
         localStorage.setItem('token', data.idToken);
@@ -26,7 +28,7 @@ const AuthProvider = ({ children }) => {
     }
 
     return (
-        <AuthContext.Provider value={{ token, isLogin, setLoginHandler, logoutHandler }}>
+        <AuthContext.Provider value={{ token, isLogin, setLoginHandler, logoutHandler, loading  }}>
             {children}
         </AuthContext.Provider>
     )
