@@ -1,4 +1,4 @@
-import React, { useCallback, useContext } from "react";
+import React, { useContext } from "react";
 import "./App.css";
 import Register from "./components/auth/Register";
 import Login from "./components/auth/Login";
@@ -10,33 +10,34 @@ import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-d
 import { AuthContext } from "./components/context/AuthContext";
 
 function App() {
-  const { token, loading  } = useContext(AuthContext);
-  if (loading) {
-    return <div className="text-center mt-5">Loading...</div>; 
-  }
-  return (
-    <Router>
-      <Switch>
-        <Route path="/" exact>
-          <Redirect to="/login" />
-        </Route>
-        <Route path="/register" exact component={Register} />
-        <Route path="/forgot-password" exact component={ForgetPassword} />
-        <Route path="/login" exact component={Login} />
+	const { token, loading } = useContext(AuthContext);
+	if (loading) {
+		return <div className="text-center mt-5">Loading...</div>;
+	}
+	return (
+		<Router>
+			<Switch>
+				<Route path="/" exact>
+					{token ? <Redirect to="/dashboard" /> : <Redirect to="/login" />}
+				</Route>
+				<Route path="/register" exact component={Register} />
+				<Route path="/forgot-password" exact component={ForgetPassword} />
+				<Route path="/login" exact>
+					{token ? <Redirect to="/dashboard" /> : <Login/>}
+				</Route> 
+				<Route path="/dashboard" exact>
+					{token ? <Dashboard /> : <Redirect to="/login" />}
+				</Route>
 
-        <Route path="/dashboard" exact>
-          {token ? <Dashboard /> : <Redirect to="/login" />}
-        </Route>
-
-        <Route path="/profile" exact>
-          {token ? <Profile /> : <Redirect to="/login" />}
-        </Route>
-        <Route path="/frontend" exact>
-          {token ? <Frontend /> : <Redirect to="/login" />}
-        </Route>
-      </Switch>
-    </Router>
-  );
+				<Route path="/profile" exact>
+					{token ? <Profile /> : <Redirect to="/login" />}
+				</Route>
+				<Route path="/frontend" exact>
+					{token ? <Frontend /> : <Redirect to="/login" />}
+				</Route>
+			</Switch>
+		</Router>
+	);
 }
 
 export default App;
