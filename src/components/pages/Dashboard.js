@@ -1,9 +1,13 @@
 import React, {useContext} from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { AuthContext } from "../context/AuthContext";
+// import { AuthContext } from "../context/AuthContext";
+import { useSelector, useDispatch } from 'react-redux';
+import { authActions } from '../redux/auth';
 function Dashboard() {
     const history = useHistory();
-    const { token, logoutHandler } = useContext(AuthContext);
+    const dispath = useDispatch();
+    const {token } = useSelector((state) => state.auth);
+    // const { token, logoutHandler } = useContext(AuthContext);
     async function verifyEmail(event) {
         event.preventDefault();
         const res = await fetch("https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyDtfKBpbUoqwilqRNORQ22-NoOc7SnzNMA", {
@@ -22,7 +26,8 @@ function Dashboard() {
     }
 
     function userLogout() {
-        logoutHandler();
+        // logoutHandler();
+        dispath(authActions.logout())
         history.push("/login");
     }
 
@@ -33,6 +38,7 @@ function Dashboard() {
                 Your profile is Incomplete. <Link to="/profile" className="text-primary">Complete now</Link>
             </span>
             <button className="btn btn-primary" onClick={verifyEmail}>Verify email</button>
+            <Link to="/frontend" className="text-primary">Frontend</Link>
             <button className="btn btn-danger" onClick={userLogout}>Logout</button>
         </div>
     );

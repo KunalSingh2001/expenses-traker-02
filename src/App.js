@@ -1,4 +1,5 @@
 import React, { useContext } from "react";
+import { useSelector } from "react-redux";
 import "./App.css";
 import Register from "./components/auth/Register";
 import Login from "./components/auth/Login";
@@ -7,13 +8,14 @@ import Profile from "./components/pages/Profile";
 import Frontend from "./components/pages/Frontend";
 import ForgetPassword from "./components/auth/ForgetPassword";
 import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
-import { AuthContext } from "./components/context/AuthContext";
-
 function App() {
-	const { token, loading } = useContext(AuthContext);
-	if (loading) {
-		return <div className="text-center mt-5">Loading...</div>;
-	}
+	const {token} = useSelector((state) => state.auth);
+	const {mode} = useSelector((state) => state.theme)
+	console.log("theme", mode);
+	// const { token, loading } = useContext(AuthContext);
+	// if (loading) {
+	// 	return <div className="text-center mt-5">Loading...</div>;
+	// }
 	return (
 		<Router>
 			<Switch>

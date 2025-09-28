@@ -9,7 +9,7 @@ const AuthProvider = ({ children }) => {
         if (savedToken) {
             setToken(savedToken);
         }
-        setLoading(false); // mark as finished checking
+        setLoading(false); 
     }, []);
 
     const setLoginHandler = (data) => {

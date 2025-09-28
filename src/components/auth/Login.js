@@ -1,8 +1,10 @@
 import React, { useRef, useContext } from 'react';
 import { Readirect, useHistory, Link } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
+import { useDispatch } from 'react-redux';
+import { authActions } from '../redux/auth';
 function Login() {
-    const { setLoginHandler } = useContext(AuthContext)
+    const dispath = useDispatch();
     const emailRef = useRef();
     const passwordRef = useRef();
     const history = useHistory();
@@ -27,10 +29,10 @@ function Login() {
 
             const data = await res.json();
             if (res.ok) {
-                setLoginHandler(data);
                 emailRef.current.value = "";
                 passwordRef.current.value = "";
                 history.push('/dashboard');
+                dispath(authActions.login(data));
             } else {
                 alert("Error: " + data.error.message);
             }
