@@ -1,5 +1,5 @@
-import React, { useRef, useState, useEffect } from "react";
 import axios from "axios";
+import React, { useRef, useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { add, edit, listing, deleteExpanse } from "../redux/expenses";
 import { toggleTheme } from "../redux/theme";
@@ -124,7 +124,7 @@ function Frontend() {
 
         const a = document.createElement("a");
         a.href = url;
-        a.download = "userdata.csv";
+        a.download = "expensesdata.csv";
         a.click();
 
         window.URL.revokeObjectURL(url);
@@ -208,7 +208,7 @@ function Frontend() {
                         </form>
                     </div>
 
-                    <div className="card shadow p-4">
+                    <div className="card shadow p-4 w-100">
                         <h4 className="text-center mb-3">Expense List</h4>
                         <table className="table table-bordered table-striped">
                             <thead className="table-dark">
